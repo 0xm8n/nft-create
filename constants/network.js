@@ -1,6 +1,5 @@
 const NETWORK = {
-  eth: "eth",
-  ropsten: "ropsten",
+  eth: "eth"
 };
 
 module.exports = {

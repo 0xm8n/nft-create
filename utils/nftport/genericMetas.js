@@ -1,42 +1,33 @@
-const path = require("path");
 const basePath = process.cwd();
 const fs = require("fs");
-const buildDir = path.join(basePath, "/build");
-
 const {
   GENERIC_TITLE,
   GENERIC_DESCRIPTION,
   GENERIC_IMAGE,
 } = require(`${basePath}/src/config.js`);
 
-if (!fs.existsSync(path.join(buildDir, "/genericJson"))) {
-  fs.mkdirSync(path.join(buildDir, "/genericJson"));
+const buildDir = `${basePath}/build`;
+const genericDir = `${buildDir}/genericJson`;
+const readDir = `${buildDir}/json`;
+
+if (!fs.existsSync(genericDir)) {
+  fs.mkdirSync(genericDir);
 }
 
-let rawdata = fs.readFileSync(`${buildDir}/json/_metadata.json`);
+let rawdata = fs.readFileSync(`${readDir}/1.json`);
 let data = JSON.parse(rawdata);
 
 console.log("Starting generic metadata creation.");
 
-for (let item of data) {
-  const genericImage = GENERIC_IMAGE[Math.floor(Math.random() * GENERIC_IMAGE.length)];
-  item.name = `${GENERIC_TITLE} #${item.custom_fields.edition}`;
-  item.description = GENERIC_DESCRIPTION;
-  item.file_url = genericImage;
-  item.image = genericImage;
-  delete item.attributes;
-  delete item.custom_fields.dna;
-
-  fs.writeFileSync(
-    `${buildDir}/genericJson/${item.custom_fields.edition}.json`,
-    JSON.stringify(item, null, 2)
-  );
-
-  console.log(`${item.name} copied and updated!`);
-}
+data.name = GENERIC_TITLE;
+data.description = GENERIC_DESCRIPTION;
+data.image = GENERIC_IMAGE;
+delete data.attributes;
+delete data.custom_fields;
+data.attributes = [];
 
 fs.writeFileSync(
-  `${buildDir}/genericJson/_metadata.json`,
+  `${genericDir}/default.json`,
   JSON.stringify(data, null, 2)
 );
 

@@ -6,14 +6,14 @@ const { NETWORK } = require(`${basePath}/constants/network.js`);
 const network = NETWORK.eth;
 
 // General metadata for Ethereum
-const namePrefix = "YOUR COLLECTION NAME";
-const description = "Remember to replace this description";
-const baseUri = "ipfs://NewUriToReplace"; // This will be replaced automatically
+const namePrefix = "RarePupils";
+const description = "Pupil is the eye of the heart and some pupil are unique and rare";
+const baseUri = "ipfs://ReplaceThisURL"; // This will be replaced automatically
 
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
-    growEditionSizeTo: 100,
+    growEditionSizeTo: 10,
     layersOrder: [
       { name: "Background" },
       { name: "Eyeball" },
@@ -37,32 +37,30 @@ const format = {
 };
 
 const extraMetadata = {
-  external_url: "https://codecats.xyz", // Replace with your website or remove this line if you do not have one.
+  external_url: "https://rarepupil.xyz", // Replace with your website or remove this line if you do not have one.
 };
 
 // NFTPort Info
 // ** REQUIRED **
-const AUTH = "YOUR API KEY HERE";
+const AUTH = '9528a0f7-87dd-42d6-a231-195b5e7d3aa8';
 const LIMIT = 2; // Your API key rate limit
-const CONTRACT_NAME = 'CRYPTOPUNKS';
-const CONTRACT_SYMBOL = 'CP';
+const CONTRACT_NAME = 'RarePupils';
+const CONTRACT_SYMBOL = 'RP';
 const CONTRACT_TYPE = 'erc721';
-const MINT_TO_ADDRESS = 'YOUR WALLET ADDRESS HERE';
+const MINT_TO_ADDRESS = '0x94021138093918b6E0DDb275272bD638C22df912';
 const CHAIN = 'rinkeby';
 const METADATA_UPDATABLE = true; // set to false if you don't want to allow metadata updates after minting
 const ROYALTY_SHARE = 1000; // Percentage of the token price that goes to the royalty address. 100 bps = 1%
-const ROYALTY_ADDRESS = "0xd8B808A887326F45B2D0cd999709Aa6264CeF919"; // Address that will receive the royalty
+const ROYALTY_ADDRESS = "0x94021138093918b6E0DDb275272bD638C22df912"; // Address that will receive the royalty
 // ** OPTIONAL **
-let CONTRACT_ADDRESS = "YOUR CONTRACT ADDRESS"; // If you want to manually include it
+let CONTRACT_ADDRESS = "0xb310a06bBbad5505EAbd3f300114416502CCb238"; // If you want to manually include it
 // Generic Metadata is optional if you want to reveal your NFTs
 const GENERIC = false; // Set to true if you want to upload generic metas and reveal the real NFTs in the future
-const GENERIC_TITLE = "Unknown"; // Replace with what you want the generic titles to say.
-const GENERIC_DESCRIPTION = "Unknown"; // Replace with what you want the generic descriptions to say.
-const GENERIC_IMAGE = [
-  "https://ipfs.io/ipfs/QmUf9tDbkqnfHkQaMdFWSGAeXwVXWA61pFED7ypx4hcsfh",
-]; // Replace with your generic image(s). If multiple, separate with a comma.
+const GENERIC_TITLE = "Rare Pupil"; // Replace with what you want the generic titles to say.
+const GENERIC_DESCRIPTION = "Pupil is the eye of the heart and some pupil are unique and rare"; // Replace with what you want the generic descriptions to say.
+const GENERIC_IMAGE = "https://gateway.pinata.cloud/ipfs/QmfJ6wy5pgJUuGgGJBPyDHN2LJsUMRj9yc7H46MdLb7zbT"; // Replace with your generic image(s). If multiple, separate with a comma.
 const REVEAL_PROMPT = true; // Set to false if you want to disable the prompt to confirm each reveal.
-const INTERVAL = 900000; // Milliseconds. This is the interval for it to check for sales and reveal the NFT. 900000 = 15 minutes.
+const INTERVAL = 300000; // Milliseconds. This is the interval for it to check for sales and reveal the NFT. 900000 = 15 minutes.
 
 // Automatically set contract address if deployed using the deployContract.js script
 try {
@@ -78,17 +76,17 @@ try {
 }
 // END NFTPort Info
 
-const solanaMetadata = {
-  symbol: "YC",
-  seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
-  external_url: "https://www.youtube.com/c/hashlipsnft",
-  creators: [
-    {
-      address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
-      share: 100,
-    },
-  ],
-};
+// const solanaMetadata = {
+//   symbol: "YC",
+//   seller_fee_basis_points: 1000, // Define how much % you want from secondary market sales 1000 = 10%
+//   external_url: "https://www.youtube.com/c/hashlipsnft",
+//   creators: [
+//     {
+//       address: "7fXNuer5sbZtaTEPhtJ5g5gNtuyRoKkvxdjEjEnPN4mC",
+//       share: 100,
+//     },
+//   ],
+// };
 
 const gif = {
   export: false,
@@ -157,7 +155,7 @@ module.exports = {
   text,
   namePrefix,
   network,
-  solanaMetadata,
+  // solanaMetadata,/
   gif,
   preview_gif,
   AUTH,

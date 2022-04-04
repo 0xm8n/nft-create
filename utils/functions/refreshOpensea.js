@@ -19,7 +19,7 @@ if (!START || !END) {
 const COLLECTION_BASE_URL =
   CHAIN.toLowerCase() === "rinkeby"
     ? `https://testnets.opensea.io/assets`
-    : "https://opensea.io/assets/matic";
+    : "https://opensea.io/assets";
 
 async function main() {
   const notFound = [];

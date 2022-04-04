@@ -12,7 +12,6 @@
     ]
   },
   "scripts": {
-    "build": "node index.js",
     "generate": "node index.js",
     "rarity": "node utils/rarity",
     "rarity_md": "node utils/functions/getRarity_fromMetadata",
@@ -22,8 +21,11 @@
     "update_info": "node utils/update_info.js",
     "preview_gif": "node utils/preview_gif.js",
     "create_generic": "node utils/nftport/genericMetas",
-    "upload_files": "node utils/nftport/uploadFiles",
+    "backup_metadata": "node utils/nftport/backupMetas",
+    "upload_images": "node utils/nftport/uploadImages",
+    "update_images_url": "node utils/nftport/updateImagesUrl",
     "upload_metadata": "node utils/nftport/uploadMetas",
+    "upload_metadata_files": "node utils/nftport/uploadMetas_files",
     "deploy_contract": "node utils/nftport/deployContract",
     "get_contract": "node utils/nftport/retrieveContract",
     "mint": "node utils/nftport/mint %npm_config_start% %npm_config_end%",
@@ -36,6 +38,8 @@
   "dependencies": {
     "async-sema": "^3.1.1",
     "canvas": "^2.8.0",
+    "cross-env": "^7.0.3",
+    "dotenv": "^10.0.0",
     "form-data": "^4.0.0",
     "gif-encoder-2": "^1.0.5",
     "node-fetch": "^2.6.6",
@@ -43,6 +47,7 @@
     "puppeteer-extra": "^3.2.3",
     "puppeteer-extra-plugin-adblocker": "^2.12.0",
     "puppeteer-extra-plugin-stealth": "^2.9.0",
+    "request": "^2.88.2",
     "sha1": "^1.1.1",
     "yesno": "^0.3.1"
   }

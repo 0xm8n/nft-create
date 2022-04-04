@@ -1,6 +1,7 @@
 const path = require("path");
 const basePath = process.cwd();
 const fs = require("fs");
+const FormData = require('form-data');
 
 const { RateLimit } = require("async-sema");
 const { fetchWithRetry } = require(`${basePath}/utils/functions/fetchWithRetry.js`);
@@ -8,6 +9,7 @@ const { fetchWithRetry } = require(`${basePath}/utils/functions/fetchWithRetry.j
 const { LIMIT, GENERIC } = require(`${basePath}/src/config.js`);
 const _limit = RateLimit(LIMIT);
 
+const allMetadata = [];
 const regex = new RegExp("^([0-9]+).json$");
 let genericUploaded = false;
 
@@ -20,65 +22,52 @@ let writeDir = `${basePath}/build/ipfsMetas`;
 
 async function main() {
   console.log(`Starting upload of ${GENERIC ? genericUploaded ? 'generic ' : '' : ''}metadata...`);
-  const allMetadata = [];
-  const files = fs.readdirSync(readDir);
-  files.sort(function (a, b) {
-    return a.split(".")[0] - b.split(".")[0];
-  });
-  for (const file of files) {
-    if (regex.test(file)) {
-      let jsonFile = fs.readFileSync(`${readDir}/${file}`);
-      let metaData = JSON.parse(jsonFile);
-      const uploadedMeta = `${writeDir}/${metaData.custom_fields.edition}.json`;
 
-      try {
-        fs.accessSync(uploadedMeta);
-        const uploadedMetaFile = fs.readFileSync(uploadedMeta);
-        if (uploadedMetaFile.length > 0) {
-          const ipfsMeta = JSON.parse(uploadedMetaFile);
-          if (ipfsMeta.response !== "OK") throw "metadata not uploaded";
-          allMetadata.push(ipfsMeta);
-          console.log(`${metaData.name} metadata already uploaded`);
-        } else {
-          throw "metadata not uploaded";
-        }
-      } catch (err) {
-        try {
-          await _limit();
-          const url = "https://api.nftport.xyz/v0/metadata";
-          const options = {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: jsonFile,
-          };
-          const response = await fetchWithRetry(url, options);
-          allMetadata.push(response);
-          fs.writeFileSync(uploadedMeta, JSON.stringify(response, null, 2));
-          console.log(`${response.name} metadata uploaded!`);
-        } catch (err) {
-          console.log(`Catch: ${err}`);
-        }
+  let formData = new FormData();
+  let jsonArray = [];
+  fs.readdirSync(readDir).forEach(file => {
+      if(!regex.test(file)) {
+        return;
       }
-    }
-    fs.writeFileSync(
-      `${writeDir}/_ipfsMetas.json`,
-      JSON.stringify(allMetadata, null, 2)
-    );
-  }
+      const fileData = fs.createReadStream(`${readDir}/${file}`);
+      // jsonArray.push(fileData);
+      formData.append("metadata_files", fileData);
+      console.log(`${file} metadata added!`);
+  });
 
-  // Upload Generic Metadata if GENERIC is true
-  if (GENERIC && !genericUploaded) {
-    if (!fs.existsSync(path.join(`${basePath}/build`, "/ipfsMetasGeneric"))) {
-      fs.mkdirSync(path.join(`${basePath}/build`, "ipfsMetasGeneric"));
+  console.log(`request: ${formData}`);
+
+  await _limit();
+  const url = "https://api.nftport.xyz/v0/metadata/directory";
+  const options = {
+    method: "POST",
+    headers: {},
+    body: formData,
+  };
+
+  const response = await fetchWithRetry(url, options);
+
+  console.log(`response: ${response}`);
+  console.log("metadata uploaded!");
+
+  fs.readdirSync(readDir).forEach(file => {
+    if(!regex.test(file)) {
+      return;
     }
-    readDir = `${basePath}/build/genericJson`;
-    writeDir = `${basePath}/build/ipfsMetasGeneric`;
-    
-    genericUploaded = true;
-    main();
-  }
+    let jsonFile = fs.readFileSync(`${readDir}/${file}`);
+    let metaData = JSON.parse(jsonFile);
+    metaData.metadata_uri = `${response.metadata_directory_ipfs_uri}${file}`;
+    // metaData.response = `${response.response}`;
+    // delete metaData["file_url"];
+
+    fs.writeFileSync(`${writeDir}/${file}`, JSON.stringify(metaData, null, 2));
+
+    allMetadata.push(metaData);
+    console.log(`${file} metadata updated!`);
+  });
+  
+  fs.writeFileSync(`${writeDir}/_ipfsMetas.json`, JSON.stringify(allMetadata, null, 2));
+
 }
 
 main();

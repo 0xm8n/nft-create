@@ -1,6 +1,6 @@
 const basePath = process.cwd();
 const fs = require("fs");
-const yesno = require('yesno');
+// const yesno = require('yesno');
 
 const {
   baseUri,
@@ -13,14 +13,17 @@ let rawdata = fs.readFileSync(`${basePath}/build/json/_metadata.json`);
 let data = JSON.parse(rawdata);
 
 console.log("Info will be updated using the config.js data.");
-const updateName = await yesno(`Update names?`);
-const updateDescription = await yesno(`Update descriptions?`);
-const updateBaseUri = await yesno(`Update images base URI?`);
+// const updateName = await yesno(`Update names?`);
+// const updateDescription = await yesno(`Update descriptions?`);
+// const updateBaseUri = await yesno(`Update images base URI?`);
 
 data.forEach((item) => {
-  if(updateName) item.name = `${namePrefix} #${item.edition}`;
-  if(updateDescription) item.description = description;
-  if(updateBaseUri) item.image = `${baseUri}/${item.edition}.png`;
+  // if(updateName) item.name = `${namePrefix} #${item.edition}`;
+  // if(updateDescription) item.description = description;
+  // if(updateBaseUri) item.image = `${baseUri}/${item.edition}.png`;
+  item.name = `${namePrefix} #${item.edition}`;
+  item.description = description;
+  item.image = `${baseUri}/${item.edition}.png`;
  
   fs.writeFileSync(
     `${basePath}/build/json/${item.edition}.json`,
@@ -33,6 +36,9 @@ fs.writeFileSync(
   JSON.stringify(data, null, 2)
 );
 
-if(updateName) console.log(`Updated name prefix for images to ===> ${namePrefix}`);
-if(updateBaseUri) console.log(`Updated baseUri for images to ===> ${baseUri}`);
-if(updateDescription) console.log(`Updated description for images to ===> ${description}`);
+// if(updateName) console.log(`Updated name prefix for images to ===> ${namePrefix}`);
+// if(updateBaseUri) console.log(`Updated baseUri for images to ===> ${baseUri}`);
+// if(updateDescription) console.log(`Updated description for images to ===> ${description}`);
+console.log(`Updated name prefix for images to ===> ${namePrefix}`);
+console.log(`Updated baseUri for images to ===> ${baseUri}`);
+console.log(`Updated description for images to ===> ${description}`);
