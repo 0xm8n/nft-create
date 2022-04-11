@@ -21,7 +21,7 @@
     "update_info": "node utils/update_info.js",
     "preview_gif": "node utils/preview_gif.js",
     "create_generic": "node utils/ipfs/genericMetas",
-    "backup_metas": "node utils/ipfs/backupMetas",
+    "backup_meta": "node utils/ipfs/backupMetas",
     "upload_image": "node utils/ipfs/uploadImages",
     "update_url": "node utils/ipfs/updateImagesUrl",
     "upload_meta": "node utils/ipfs/uploadMetas",
