@@ -7,9 +7,9 @@ const { layerConfigurations } = require(`${basePath}/src/config.js`);
 const { getElements } = require("../src/main.js");
 
 // read json data
-let rawdata = fs.readFileSync(`${basePath}/build/json/_metadata.json`);
+let rawdata = fs.readFileSync(`${basePath}/build/json/metadata.json`);
 let data = JSON.parse(rawdata);
-let editionSize = data.length;
+let idSize = data.length;
 
 let rarityData = [];
 
@@ -64,7 +64,7 @@ for (var layer in rarityData) {
   for (var attribute in rarityData[layer]) {
     // convert to percentage
     rarityData[layer][attribute].occurrence =
-      (rarityData[layer][attribute].occurrence / editionSize) * 100;
+      (rarityData[layer][attribute].occurrence / idSize) * 100;
 
     // show two decimal places in percent
     rarityData[layer][attribute].occurrence =

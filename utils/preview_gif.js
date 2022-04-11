@@ -1,11 +1,13 @@
 const basePath = process.cwd();
 const fs = require("fs");
 const { createCanvas, loadImage } = require("canvas");
+const { randomInt } = require("crypto");
 const buildDir = `${basePath}/build`;
 const imageDir = `${buildDir}/images`;
 const { format, preview_gif } = require(`${basePath}/src/config.js`);
 const canvas = createCanvas(format.width, format.height);
 const ctx = canvas.getContext("2d");
+const maxSupply = 10000;
 
 const HashlipsGiffer = require(`${basePath}/modules/HashlipsGiffer.js`);
 let hashlipsGiffer = null;
@@ -17,16 +19,22 @@ const loadImg = async (_img) => {
   });
 };
 
+// Extract from preview config
+const { numberOfImages, order, repeat, quality, delay, imageName } =
+  preview_gif;
+  
+const randList = [];
+for(let i=0; i<numberOfImages;i++){
+  randList.push(randomInt(maxSupply)+1);
+}
+
 // read image paths
 const imageList = [];
-const rawdata = fs.readdirSync(imageDir).forEach((file) => {
-  imageList.push(loadImg(`${imageDir}/${file}`));
+randList.forEach((file) => {
+  imageList.push(loadImg(`${imageDir}/${file}.png`));
 });
 
 const saveProjectPreviewGIF = async (_data) => {
-  // Extract from preview config
-  const { numberOfImages, order, repeat, quality, delay, imageName } =
-    preview_gif;
   // Extract from format config
   const { width, height } = format;
   // Prepare canvas

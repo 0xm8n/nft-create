@@ -15,11 +15,9 @@ const {
   rarityDelimiter,
   shuffleLayerConfigurations,
   debugLogs,
-  // extraMetadata,
   text,
   namePrefix,
   network,
-  // solanaMetadata,
   gif,
 } = require(`${basePath}/src/config.js`);
 const canvas = createCanvas(format.width, format.height);
@@ -130,43 +128,15 @@ const addMetadata = (_dna, _edition) => {
   let tempMetadata = {
     name: `${namePrefix} #${_edition}`,
     description: description,
-    // file_url: `${baseUri}/${_edition}.png`,
     image: `${baseUri}/${_edition}.png`,
     attributes: attributesList,
     custom_fields: {
       dna: sha1(_dna),
       edition: _edition,
       date: dateTime,
-      // compiler: "DemonPride Modified",
     },
-    // ...extraMetadata,
   };
-  // if (network == NETWORK.sol) {
-  //   tempMetadata = {
-  //     //Added metadata for solana
-  //     name: tempMetadata.name,
-  //     symbol: solanaMetadata.symbol,
-  //     description: tempMetadata.description,
-  //     //Added metadata for solana
-  //     seller_fee_basis_points: solanaMetadata.seller_fee_basis_points,
-  //     image: `image.png`,
-  //     //Added metadata for solana
-  //     external_url: solanaMetadata.external_url,
-  //     edition: _edition,
-  //     ...extraMetadata,
-  //     attributes: tempMetadata.attributes,
-  //     properties: {
-  //       files: [
-  //         {
-  //           uri: "image.png",
-  //           type: "image/png",
-  //         },
-  //       ],
-  //       category: "image",
-  //       creators: solanaMetadata.creators,
-  //     },
-  //   };
-  // }
+
   metadataList.push(tempMetadata);
   attributesList = [];
 };
@@ -300,7 +270,7 @@ const createDna = (_layers) => {
 };
 
 const writeMetaData = (_data) => {
-  fs.writeFileSync(`${buildDir}/json/_metadata.json`, _data);
+  fs.writeFileSync(`${buildDir}/json/metadata.json`, _data);
 };
 
 const saveMetaDataSingleFile = (_editionCount) => {

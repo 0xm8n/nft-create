@@ -37,10 +37,10 @@ async function main() {
             body: formData,
           };
           const response = await fetchWithRetry(url, options);
-          // metaData.file_url = response.ipfs_url;
           metaData.image = response.ipfs_url;
-          // delete metaData["file_url"];
-          // delete metaData.custom_fields["compiler"];
+          metaData.id = metaData.custom_fields.edition;
+          delete metaData["name"];
+          delete metaData["custom_fields"];
 
           fs.writeFileSync(
             `${basePath}/build/json/${fileName}.json`,
@@ -59,7 +59,7 @@ async function main() {
   }
 
   fs.writeFileSync(
-    `${basePath}/build/json/_metadata.json`,
+    `${basePath}/build/json/metadata.json`,
     JSON.stringify(allMetadata, null, 2)
   );
 }

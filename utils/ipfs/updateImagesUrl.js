@@ -7,17 +7,19 @@ let writeDir = `${basePath}/build/json`;
 
 async function main() {
 
-  const ipfs_folder = "QmQR4xnjPRgkcn8eomC1A8FmRyWpaqXAfwE6MqDovZv766";
-  const ipfs_gateway = "https://ipfs.io";
+  // const ipfs_folder = "";
+  const ipfs_gateway = "https://gateway.pinata.cloud/ipfs/QmTou9CrJtJHZkyBYsBqdKTspz2iBgPi3ngjGwicyK1VwQ";
   fs.readdirSync(writeDir).forEach(file => {
     if(!regexMeta.test(file)) {
       return;
     }
     let jsonFile = fs.readFileSync(`${writeDir}/${file}`);
     let metaData = JSON.parse(jsonFile);
-    metaData.image = ipfs_gateway+"/ipfs/"+ipfs_folder+"/"+file.split(".")[0]+".png";
-    // delete metaData["file_url"];
-    // delete metaData.custom_fields["compiler"];
+    metaData.image = ipfs_gateway+"/"+file.split(".")[0]+".png";
+    
+    metaData.id = metaData.custom_fields.edition;
+    delete metaData["name"];
+    delete metaData["custom_fields"];
 
     fs.writeFileSync(`${writeDir}/${file}`, JSON.stringify(metaData, null, 2));
 
@@ -25,7 +27,7 @@ async function main() {
     console.log(`${file} metadata updated!`);
   });
   
-  fs.writeFileSync(`${writeDir}/_metadata.json`, JSON.stringify(allMetadata, null, 2));
+  fs.writeFileSync(`${writeDir}/metadata.json`, JSON.stringify(allMetadata, null, 2));
 }
 
 main();

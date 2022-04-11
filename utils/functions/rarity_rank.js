@@ -13,13 +13,13 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
   try {
     // read json data
     const rawdata = fs.readFileSync(
-      `${basePath}/build/json/_metadata_with_rarity.json`
+      `${basePath}/build/json/metadata_with_rarity.json`
     );
     const nfts = JSON.parse(rawdata);
 
     // prompt user to choose how to list nfts
     // 1. get top ## nfts
-    // 2. get a specific nft by edition
+    // 2. get a specific nft by id
     const choice = await prompt(
       "Enter 1 to get top ## NFTs by rarity or 2 to get a specific NFTs rarity: "
     );
@@ -31,17 +31,23 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
       );
       const topNfts = sortedNfts.slice(0, top);
       console.log(
-        topNfts.map(({ rank, total_rarity_score, name }) => {
+        topNfts.map(({ rank, total_rarity_score, id }) => {
           return {
-            name,
+            id,
             rank,
             total_rarity_score,
           };
         })
       );
+      sortedNfts.forEach(a => {
+        delete a["description"];
+        delete a["image"];
+        delete a["attributes"];
+      });
+      fs.writeFileSync(`${basePath}/build/json/rarity_rank.json`, JSON.stringify(sortedNfts, null, 2));
     } else if (choice === "2") {
-      const nftEdition = await prompt("Enter the NFT Edition: ");
-      const nft = nfts.find((nft) => nft.custom_fields.edition === +nftEdition);
+      const nftId = await prompt("Enter the NFT Id: ");
+      const nft = nfts.find((nft) => nft.id === +nftId);
       console.log({
         name: nft.name,
         rank: nft.rank,

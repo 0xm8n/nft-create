@@ -11,7 +11,7 @@ START = parseInt(START);
 END = parseInt(END);
 if (!START || !END) {
   console.log(
-    "Please provide a start and end edition number. Example: npm run refresh_os --start 1 --end 10"
+    "Please provide a start and end id number. Example: npm run refresh_os --start 1 --end 10"
   );
   process.exit(1);
 }
@@ -33,7 +33,7 @@ async function main() {
 
   for (let i = START; i <= END; i++) {
     try {
-      console.log(`Refreshing Edition: ${i}`);
+      console.log(`Refreshing Id: ${i}`);
 
       const url = `${COLLECTION_BASE_URL}/${CONTRACT_ADDRESS}/${i}`;
 
@@ -44,16 +44,16 @@ async function main() {
         title.map((title) => title.textContent)
       );
       if (pageTitle[0].includes("Not Found")) {
-        console.log(`Edition ${i} not found!`);
+        console.log(`Id ${i} not found!`);
         notFound.push(i);
       }
 
       await page.click('button>div>i[value="refresh"]');
       await page.waitForTimeout(5000);
 
-      console.log(`Refreshed Edition: ${i}`);
+      console.log(`Refreshed Id: ${i}`);
     } catch (error) {
-      console.log(`Error refreshing edition ${i}: ${error}`);
+      console.log(`Error refreshing id ${i}: ${error}`);
       errors.push(i);
     }
   }
