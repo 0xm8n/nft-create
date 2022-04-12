@@ -25,31 +25,27 @@ async function main() {
         let jsonFile = fs.readFileSync(`${basePath}/build/json/${fileName}.json`);
         let metaData = JSON.parse(jsonFile);
 
-        if(!metaData.image.includes('https://')) {
-          await _limit()
-          const url = "https://api.nftport.xyz/v0/files";
-          const formData = new FormData();
-          const fileStream = fs.createReadStream(`${basePath}/build/images/${file}`);
-          formData.append("file", fileStream);
-          const options = {
-            method: "POST",
-            headers: {},
-            body: formData,
-          };
-          const response = await fetchWithRetry(url, options);
-          metaData.image = response.ipfs_url;
-          metaData.id = metaData.custom_fields.edition;
-          delete metaData["name"];
-          delete metaData["custom_fields"];
+        await _limit()
+        const url = "https://api.nftport.xyz/v0/files";
+        const formData = new FormData();
+        const fileStream = fs.createReadStream(`${basePath}/build/images/${file}`);
+        formData.append("file", fileStream);
+        const options = {
+          method: "POST",
+          headers: {},
+          body: formData,
+        };
+        const response = await fetchWithRetry(url, options);
+        metaData.image = response.ipfs_url;
+        metaData.id = metaData.custom_fields.edition;
+        delete metaData["name"];
+        delete metaData["custom_fields"];
 
-          fs.writeFileSync(
-            `${basePath}/build/json/${fileName}.json`,
-            JSON.stringify(metaData, null, 2)
-          );
-          console.log(`${response.file_name} uploaded & ${fileName}.json updated!`);
-        } else {
-          console.log(`${fileName} already uploaded.`);
-        }
+        fs.writeFileSync(
+          `${basePath}/build/json/${fileName}.json`,
+          JSON.stringify(metaData, null, 2)
+        );
+        console.log(`${response.file_name} uploaded & ${fileName}.json updated!`);
 
         allMetadata.push(metaData);
       }
