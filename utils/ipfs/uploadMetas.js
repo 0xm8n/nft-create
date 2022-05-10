@@ -1,71 +1,46 @@
 const path = require("path");
 const basePath = process.cwd();
 const fs = require("fs");
-const FormData = require('form-data');
+const request = require('request');
 
-const { RateLimit } = require("async-sema");
-const { fetchWithRetry } = require(`${basePath}/utils/functions/fetchWithRetry.js`);
-
-const { LIMIT, GENERIC } = require(`${basePath}/src/config.js`);
-const _limit = RateLimit(LIMIT);
-
-const allMetadata = [];
+const { AUTH } = require(`${basePath}/src/config.js`);
 const regex = new RegExp("^([0-9]+).json$");
-let genericUploaded = false;
-
-if (!fs.existsSync(path.join(`${basePath}/build`, "/ipfsMetas"))) {
-  fs.mkdirSync(path.join(`${basePath}/build`, "ipfsMetas"));
-}
 
 let readDir = `${basePath}/build/json`;
-let writeDir = `${basePath}/build/ipfsMetas`;
 
-async function main() {
-  console.log(`Starting upload of ${GENERIC ? genericUploaded ? 'generic ' : '' : ''}metadata...`);
-
-  let formData = new FormData();
-  fs.readdirSync(readDir).forEach(file => {
-      if(!regex.test(file)) {
-        return;
-      }
-      const fileData = fs.createReadStream(`${readDir}/${file}`);
-      formData.append("metadata_files", fileData);
-      console.log(`${file} metadata added!`);
-  });
-
-  console.log(`request: ${formData}`);
-
-  await _limit();
-  const url = "https://api.nftport.xyz/v0/metadata/directory";
-  const options = {
-    method: "POST",
-    headers: {},
-    body: formData,
-  };
-
-  const response = await fetchWithRetry(url, options);
-
-  console.log(`response: ${response}`);
-  console.log("metadata uploaded!");
-
-  fs.readdirSync(readDir).forEach(file => {
+function getFileStreamForJSONFiles(directory) {
+const jsonArray = []
+fs.readdirSync(directory).forEach(file => {
     if(!regex.test(file)) {
-      return;
+    return
     }
-    let jsonFile = fs.readFileSync(`${readDir}/${file}`);
-    let metaData = JSON.parse(jsonFile);
-    metaData.metadata_uri = `${response.metadata_directory_ipfs_uri}${file}`;
-    // metaData.response = `${response.response}`;
-    // delete metaData["file_url"];
-
-    fs.writeFileSync(`${writeDir}/${file}`, JSON.stringify(metaData, null, 2));
-
-    allMetadata.push(metaData);
-    console.log(`${file} metadata updated!`);
-  });
-  
-  fs.writeFileSync(`${writeDir}/ipfsMetas.json`, JSON.stringify(allMetadata, null, 2));
-
+    const fileData = fs.createReadStream(path.join(directory, file));
+    jsonArray.push(fileData)
+});
+return jsonArray
 }
 
-main();
+function sendRequest(metadataFileStreams, apiKey) {
+    const options = {
+        url: "https://api.nftport.xyz/v0/metadata/directory",
+        headers: { 
+            "Authorization": apiKey,
+            "Content-Type": "multipart/form-data",
+        }
+    }
+    const req = request.post(options, function (err, resp, body) {
+        if (err) {
+            console.error('Error: ' + err);
+        } else {
+            console.log('Response: ' + body);
+            return resp;
+        }
+    });
+    const form = req.form();
+    metadataFileStreams.forEach(file => {
+        form.append('metadata_files', file);
+    })
+}
+
+metadataFileStreams = getFileStreamForJSONFiles(readDir)
+sendRequest(metadataFileStreams, AUTH)

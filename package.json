@@ -25,7 +25,7 @@
     "upload_image": "node utils/ipfs/uploadImages",
     "update_url": "node utils/ipfs/updateImagesUrl",
     "upload_meta": "node utils/ipfs/uploadMetas",
-    "refresh_os": "node utils/functions/refreshOpensea"
+    "refresh_os": "node utils/functions/opensea_refresh_meta"
   },
   "author": "Demon Web3",
   "license": "MIT",

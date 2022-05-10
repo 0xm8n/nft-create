@@ -17,9 +17,11 @@ async function main() {
     let metaData = JSON.parse(jsonFile);
     metaData.image = ipfs_gateway+"/"+file.split(".")[0]+".png";
     
-    metaData.id = metaData.custom_fields.edition;
-    delete metaData["name"];
-    delete metaData["custom_fields"];
+    if(metaData.custom_fields != null){
+      metaData.id = metaData.custom_fields.edition;
+      delete metaData["name"];
+      delete metaData["custom_fields"];
+    }
 
     fs.writeFileSync(`${writeDir}/${file}`, JSON.stringify(metaData, null, 2));
 

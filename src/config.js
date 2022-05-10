@@ -10,6 +10,14 @@ const namePrefix = "RarePupils";
 const description = "Pupil is the eye of the heart and some pupil are unique and rare";
 const baseUri = "ipfs://ReplaceThisURL"; // This will be replaced automatically
 
+// IPFS Info
+const AUTH = '9528a0f7-87dd-42d6-a231-195b5e7d3aa8'; // API AUTH for nft port upload, not used now
+const CHAIN = 'rinkeby';
+const GENERIC_TITLE = "Rare Pupil"; // Replace with what you want the generic titles to say.
+const GENERIC_DESCRIPTION = "Pupil is the eye of the heart and some pupil are unique and rare"; // Replace with what you want the generic descriptions to say.
+const GENERIC_IMAGE = "https://gateway.pinata.cloud/ipfs/QmWDGN22z3WDbk43tmtYF6mvaxEFBxUHYTdgUeqmuQkGMR"; // Replace with your generic image(s). If multiple, separate with a comma.
+// END IPFS Info
+
 // If you have selected Solana then the collection starts from 0 automatically
 const layerConfigurations = [
   {
@@ -32,23 +40,10 @@ const shuffleLayerConfigurations = false;
 const debugLogs = false;
 
 const format = {
-  width: 512,
-  height: 512,
+  width: 1024,
+  height: 1024,
   smoothing: false,
 };
-
-// IPFS Info
-const AUTH = '9528a0f7-87dd-42d6-a231-195b5e7d3aa8';
-const LIMIT = 2; // Your API key rate limit
-const CHAIN = 'rinkeby';
-const ROYALTY_SHARE = 750; // Percentage of the token price that goes to the royalty address. 100 bps = 1%
-const ROYALTY_ADDRESS = "0x94021138093918b6E0DDb275272bD638C22df912"; // Address that will receive the royalty
-const CONTRACT_ADDRESS = "0x88Ba21Fd30F2800B0C13485EBA98E1C496c92A28";
-const GENERIC_TITLE = "Rare Pupil"; // Replace with what you want the generic titles to say.
-const GENERIC_DESCRIPTION = "Pupil is the eye of the heart and some pupil are unique and rare"; // Replace with what you want the generic descriptions to say.
-const GENERIC_IMAGE = "https://gateway.pinata.cloud/ipfs/QmWDGN22z3WDbk43tmtYF6mvaxEFBxUHYTdgUeqmuQkGMR"; // Replace with your generic image(s). If multiple, separate with a comma.
-
-// END IPFS Info
 
 const gif = {
   export: false,
