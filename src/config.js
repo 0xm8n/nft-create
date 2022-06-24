@@ -13,6 +13,7 @@ const baseUri = "ipfs://ReplaceThisURL"; // This will be replaced automatically
 // IPFS Info
 const AUTH = '9528a0f7-87dd-42d6-a231-195b5e7d3aa8'; // API AUTH for nft port upload, not used now
 const CHAIN = 'rinkeby';
+const CONTRACT_ADDRESS = '0xF655bDdc632c8dd697335FD7eFd6374521314bdc';
 const GENERIC_TITLE = "Rare Pupil"; // Replace with what you want the generic titles to say.
 const GENERIC_DESCRIPTION = "Pupil is the eye of the heart and some pupil are unique and rare"; // Replace with what you want the generic descriptions to say.
 const GENERIC_IMAGE = "https://gateway.pinata.cloud/ipfs/QmWDGN22z3WDbk43tmtYF6mvaxEFBxUHYTdgUeqmuQkGMR"; // Replace with your generic image(s). If multiple, separate with a comma.
@@ -24,13 +25,16 @@ const layerConfigurations = [
     growEditionSizeTo: 10000,
     layersOrder: [
       { name: "Background" },
-      { name: "Effect" },
-      { name: "Eyeball" },
-      { name: "Eye color" },
-      { name: "Iris" },
-      { name: "Shine" },
-      { name: "Bottom lid" },
-      { name: "Top lid" },
+      { name: "Body" },
+      { name: "Special" },
+      { name: "Eyes" },
+      { name: "Head" },
+      { name: "Nose" },
+      { name: "Mouth" },
+      { name: "Dress" },
+      { name: "Horn" },
+      { name: "Pupils" },
+      { name: "Accessories" },
     ],
   },
 ];
@@ -40,8 +44,8 @@ const shuffleLayerConfigurations = false;
 const debugLogs = false;
 
 const format = {
-  width: 1024,
-  height: 1024,
+  width: 2048,
+  height: 2048,
   smoothing: false,
 };
 
@@ -88,7 +92,7 @@ const preview = {
 };
 
 const preview_gif = {
-  numberOfImages: 5,
+  numberOfImages: 20,
   order: "ASC", // ASC, DESC, MIXED
   repeat: 0,
   quality: 100,
@@ -114,12 +118,9 @@ module.exports = {
   gif,
   preview_gif,
   AUTH,
-  LIMIT,
   CONTRACT_ADDRESS,
   CHAIN,
   GENERIC_TITLE,
   GENERIC_DESCRIPTION,
   GENERIC_IMAGE,
-  ROYALTY_SHARE,
-  ROYALTY_ADDRESS,
 };

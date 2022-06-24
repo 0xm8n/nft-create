@@ -16,12 +16,12 @@
 const fetch = require("node-fetch");
 const basePath = process.cwd();
 const { CONTRACT_ADDRESS, CHAIN } = require(`${basePath}/src/config.js`);
-const maxSupply = 200;
-const startIndex = 100;
+const maxSupply = 10000;
+const startIndex = 1;
 const threads = 1;
 const chunkSize = maxSupply / threads;
 
-const contractAddress = process.env.CONTRACT || "";
+const contractAddress = CONTRACT_ADDRESS || "";
 
 const baseUrl =
   CHAIN.toLowerCase() === "rinkeby"
