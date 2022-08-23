@@ -18,7 +18,6 @@ async function main() {
     metaData.image = ipfs_gateway+"/"+file.split(".")[0]+".png";
     
     if(metaData.custom_fields != null){
-      metaData.id = metaData.custom_fields.edition;
       delete metaData["name"];
       delete metaData["custom_fields"];
     }

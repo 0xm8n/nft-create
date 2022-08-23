@@ -22,6 +22,7 @@ console.log("Starting generic metadata creation.");
 data.name = GENERIC_TITLE;
 data.description = GENERIC_DESCRIPTION;
 data.image = GENERIC_IMAGE;
+delete data.id;
 delete data.attributes;
 delete data.custom_fields;
 data.attributes = [];

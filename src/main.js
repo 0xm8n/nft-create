@@ -126,8 +126,9 @@ const drawBackground = () => {
 const addMetadata = (_dna, _edition) => {
   let dateTime = Date.now();
   let tempMetadata = {
-    name: `${namePrefix} #${_edition}`,
+    name: `${namePrefix}`,
     description: description,
+    id: _edition,
     image: `${baseUri}/${_edition}.png`,
     attributes: attributesList,
     custom_fields: {
@@ -302,7 +303,7 @@ function shuffle(array) {
 
 const startCreating = async () => {
   let layerConfigIndex = 0;
-  let editionCount = 0;
+  let editionCount = network == NETWORK.sol ? 0 : 1;
   let failedCount = 0;
   let abstractedIndexes = [];
   for (

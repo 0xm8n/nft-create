@@ -21,7 +21,7 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
     // 1. get top ## nfts
     // 2. get a specific nft by id
     const choice = await prompt(
-      "Enter 1 to get top ## NFTs by rarity or 2 to get a specific NFTs rarity: "
+      "Enter 1 to get top ## NFTs by rarity\nEnter 2 to get a specific NFTs rarity\nEnter 3 to get rarity for a trait search\n: "
     );
 
     if (choice === "1") {
@@ -53,6 +53,22 @@ const prompt = (query) => new Promise((resolve) => rl.question(query, resolve));
         rank: nft.rank,
         total_rarity_score: nft.total_rarity_score,
       });
+    } else if (choice === "3") {
+      const word = await prompt("Enter the word of trait you want to get: ");
+      const sortedNfts = nfts.sort(
+        (a, b) => b.total_rarity_score - a.total_rarity_score
+      );
+      let filterNfts = [];
+      sortedNfts.forEach(a => {
+        let getWord = false;
+        a["attributes"].forEach(b => {
+          if(b.value.includes(word)){
+            getWord = true;
+          }
+        })
+        if(getWord) filterNfts.push(a);
+      });
+      fs.writeFileSync(`${basePath}/build/json/rarity_trait_${word}.json`, JSON.stringify(filterNfts, null, 2));
     } else {
       console.log("Invalid choice. Enter either 1 or 2.");
     }
